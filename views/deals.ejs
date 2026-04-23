@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الصفقات الذكية | السفير برو</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --col-followup: #3b82f6;
+      --col-waiting: #f59e0b;
+      --col-deals: #10b981;
+      --col-rejected: #ef4444;
+      --card-bg: #ffffff;
+      --accent-gold: #c5a059;
+    }
+
+    body {
+      background: var(--bg-main);
+      font-family: 'Cairo', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      color: #f8fafc;
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .navbar-custom {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 25px;
+    }
+
+    .kanban-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      flex: 1;
+      overflow-x: auto;
+      align-items: flex-start;
+    }
+
+    .kanban-col {
+      flex: 1;
+      min-width: 330px;
+      max-width: 360px;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 180px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .col-header {
+      padding: 15px 20px;
+      border-radius: 20px 20px 0 0;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-deal {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #1e293b;
+      border-right: 8px solid #ccc;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-deal:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .employee-badge {
+      background: #f1f5f9;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      margin-top: 10px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #475569;
+    }
+
+    .header-followup { background: var(--col-followup); }
+    .header-waiting { background: var(--col-waiting); }
+    .header-deals { background: var(--col-deals); }
+    .header-rejected { background: var(--col-rejected); }
+
+    .border-followup { border-right-color: var(--col-followup); }
+    .border-waiting_reply { border-right-color: var(--col-waiting); }
+    .border-deals { border-right-color: var(--col-deals); }
+    .border-rejected { border-right-color: var(--col-rejected); }
+
+    .items-box::-webkit-scrollbar { width: 5px; }
+    .items-box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+    
+    .btn-excel {
+      background-color: #109d59;
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+    .btn-excel:hover {
+      background-color: #0b7a44;
+      color: white;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+    <nav class="navbar-custom d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-3">
+        <h4 class="mb-0 fw-black text-warning"><i class="fas fa-crown me-2"></i> السفير برو</h4>
+        <input type="text" id="dealSearch" class="form-control form-control-sm bg-dark text-white border-secondary rounded-pill" style="width: 250px;" placeholder="بحث باسم العميل..." onkeyup="filterDeals()">
+      </div>
+      
+      <div class="d-flex align-items-center gap-3">
+        <% if (user.role === 'admin' || user.role === 'board_member') { %>
+          <a href="/export-deals-excel" class="btn btn-excel btn-sm rounded-pill px-3 fw-bold shadow-sm">
+            <i class="fas fa-file-excel me-1"></i> تصدير التقرير العام
+          </a>
+        <% } %>
+        <div class="small d-flex gap-4">
+          <span><i class="fas fa-user-tie text-info"></i> <%= user.name %></span>
+          <span><i class="far fa-clock text-warning"></i> <span id="clock"></span></span>
+          <a href="/" class="btn btn-outline-light btn-sm rounded-pill">الرئيسية</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="kanban-container">
+      <% 
+        const structure = [
+            { id: 'followup', name: 'متابعة المستندات', class: 'header-followup' },
+            { id: 'waiting_reply', name: 'بانتظار الرد', class: 'header-waiting' },
+            { id: 'deals', name: 'تم التعاقد', class: 'header-deals' },
+            { id: 'rejected', name: 'مرفوضة', class: 'header-rejected' }
+        ];
+
+        structure.forEach(col => { 
+            const filtered = clients.filter(c => c.Status === col.id);
+        %>
+      <div class="kanban-col animate__animated animate__fadeIn">
+        <div class="col-header <%= col.class %>">
+          <span><%= col.name %></span>
+          <span class="badge bg-white text-dark"><%= filtered.length %></span>
+        </div>
+        <div class="items-box p-3 overflow-auto">
+          <% filtered.forEach(client => { %>
+          <div class="card-deal border-<%= client.Status %>" onclick='openDetails(<%- JSON.stringify(client) %>)'>
+            <div class="fw-bold text-dark mb-1"><i class="fas fa-user-circle me-1 text-secondary"></i> <%= client.name %></div>
+            <div class="small text-muted mb-2"><i class="fas fa-car-side me-1"></i> <%= client.car %></div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge bg-primary-subtle text-primary rounded-pill px-2">💰 <%= client.budget %></span>
+              <span class="small text-muted"><%= client.phone %></span>
+            </div>
+
+            <div class="employee-badge">
+              <i class="fas fa-user-tie text-info"></i>
+              <span class="fw-bold">المسؤول: <%= client.AssignedTo %></span>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="modal fade" id="clientModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content text-dark">
+        <form action="/update-client-status" method="POST">
+          <input type="hidden" name="clientId" id="mId">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title fw-bold">تحديث ملف: <span id="mName"></span></h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="mb-3">
+                  <label class="small fw-bold mb-1">حالة الصفقة</label>
+                  <select name="newStatus" id="mStatus" class="form-select border-primary">
+                    <option value="followup">متابعة المستندات</option>
+                    <option value="waiting_reply">بانتظار الرد</option>
+                    <option value="deals">تم التعاقد ✅</option>
+                    <option value="rejected">مرفوضة ❌</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="small fw-bold mb-1">ملاحظة جديدة</label>
+                  <textarea name="employeeNotes" class="form-control" rows="4" required placeholder="ماذا حدث في التواصل الأخير؟"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">حفظ التحديث</button>
+              </div>
+              <div class="col-md-7 border-start">
+                <h6 class="fw-bold mb-3"><i class="fas fa-history text-warning"></i> سجل الملاحظات</h6>
+                <div id="mHistory" style="max-height: 300px; overflow-y: auto;"></div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function filterDeals() {
+      const val = document.getElementById('dealSearch').value.toLowerCase();
+      document.querySelectorAll('.card-deal').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(val) ? 'block' : 'none';
+      });
+    }
+
+    function openDetails(client) {
+      document.getElementById('mId').value = client.id;
+      document.getElementById('mName').innerText = client.name;
+      document.getElementById('mStatus').value = client.Status;
+
+      const histDiv = document.getElementById('mHistory');
+      histDiv.innerHTML = client.NotesHistory && client.NotesHistory.length ?
+        client.NotesHistory.slice().reverse().map(h => `
+          <div class="mb-2 p-2 bg-light border-start border-3 border-primary rounded small">
+            <div class="d-flex justify-content-between fw-bold mb-1">
+              <span>${h.user}</span>
+              <span class="text-muted">${h.date}</span>
+            </div>
+            <div>${h.text}</div>
+          </div>
+        `).join('') : '<p class="text-center text-muted">لا يوجد سجل ملاحظات</p>';
+
+      new bootstrap.Modal(document.getElementById('clientModal')).show();
+    }
+
+    setInterval(() => {
+      document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-EG');
+    }, 1000);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل زيارة جديدة | السفير</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0a192f 0%, #112240 100%); min-height: 100vh; display: flex; align-items: center; padding: 20px; }
+        .card { border-radius: 20px; border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.4); overflow: hidden; background: #fff; }
+        .card-header { background: #b08d57; color: white; text-align: center; padding: 25px; border: none; }
+        .card-header h3 { margin: 0; font-weight: 900; font-size: 24px; }
+        .btn-primary { background-color: #0a192f; border: none; padding: 15px; border-radius: 10px; font-weight: bold; transition: 0.3s; }
+        .btn-primary:hover { background-color: #b08d57; transform: translateY(-2px); }
+        label { font-weight: bold; color: #0a192f; margin-bottom: 8px; }
+        .form-control, .form-select { border-radius: 8px; padding: 12px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>السفير لتجارة السيارات</h3>
+                        <small>تسجيل زيارة عميل جديدة</small>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/print-visit" method="POST">
+                            <div class="mb-3">
+                                <label>اسم العميل الثنائي/الثلاثي</label>
+                                <input type="text" name="name" class="form-control" placeholder="ادخل اسم العميل هنا..." required>
+                            </div>
+                            <div class="mb-3">
+                                <label>السيارة المطلوبة</label>
+                                <input type="text" name="car" class="form-control" placeholder="مثال: نيسان صني 2026" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>مصدر التوجيه</label>
+                                    <select name="source" class="form-select">
+                                        <option value="زيارة شخصية (Direct)">زيارة شخصية</option>
+                                        <option value="فيسبوك / سوشيال">سوشيال ميديا</option>
+                                        <option value="ترشيح عميل">ترشيح عميل</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>نظام الشراء</label>
+                                    <select name="purpose" class="form-select">
+                                        <option value="استلام فوري">استلام فوري</option>
+                                        <option value="نظام المبادرة">مبادرة</option>
+                                        <option value="تقسيط">تقسيط</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label>مسؤول المبيعات</label>
+                                <select name="assignedTo" class="form-select">
+                                    <% employees.forEach(emp => { %>
+                                        <option value="<%= emp.name %>"><%= emp.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">تجهيز ورقة المعاينة والطباعة</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

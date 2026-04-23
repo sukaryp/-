@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة الانتظار | السفير لاستيراد السيارات</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-dark: #0f172a; --accent-gold: #c5a059; --bg-light: #f8fafc; }
+        body { background: var(--bg-light); font-family: 'Cairo', sans-serif; }
+        .navbar { background: var(--primary-dark); border-bottom: 3px solid var(--accent-gold); }
+        .waiting-card { 
+            border-radius: 20px; border: none; 
+            border-right: 5px solid var(--accent-gold);
+            transition: 0.3s; background: white;
+            position: relative;
+        }
+        .waiting-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .pulse-icon { animation: pulse 2s infinite; color: var(--accent-gold); }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            70% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        .btn-action { background: var(--primary-dark); color: white; border-radius: 12px; font-weight: 700; }
+        .btn-action:hover { background: var(--accent-gold); color: var(--primary-dark); }
+        
+        .contact-box { background: #f1f5f9; border-radius: 12px; padding: 10px; margin: 10px 0; }
+        .phone-link { color: var(--primary-dark); text-decoration: none; font-weight: 800; font-size: 1.1rem; }
+        .phone-link:hover { color: var(--accent-gold); }
+        
+        .time-badge { font-size: 0.75rem; font-weight: 700; color: #64748b; }
+        .badge-assigned { background: #e2e8f0; color: #1e293b; font-weight: 700; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark p-3 sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold" href="/"><i class="fas fa-home me-2"></i> الرئيسية</a>
+        <div class="text-white small">
+            <i class="fas fa-user-circle me-1 text-warning"></i> <%= user.name %> 
+            <span class="badge bg-secondary ms-2"><%= user.role === 'admin' ? 'أدمن' : 'مبيعات' %></span>
+        </div>
+        <span class="text-white fw-bold" id="live-clock">00:00:00</span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark"><i class="fas fa-hourglass-half pulse-icon me-2"></i> قائمة انتظار الإجراءات</h3>
+        <span class="badge bg-warning text-dark p-2 rounded-3 fs-6 px-3">إجمالي الانتظار: <%= clients.length %></span>
+    </div>
+
+    <% if(clients.length === 0) { %>
+        <div class="text-center mt-5 p-5 bg-white rounded-4 shadow-sm border">
+            <i class="fas fa-check-double text-success display-1 mb-3"></i>
+            <h4 class="text-muted fw-bold">لا يوجد عملاء حالياً.. السيستم "رايق" وكل المهام موزعة!</h4>
+        </div>
+    <% } else { %>
+        <div class="row g-4">
+            <% clients.forEach(client => { %>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card waiting-card shadow-sm p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark"><%= client.name %></h5>
+                                <span class="time-badge"><i class="far fa-clock me-1"></i> <%= client.createdAt || 'غير محدد' %></span>
+                            </div>
+                            <span class="badge bg-light text-muted border px-2"><%= client.source || 'مباشر' %></span>
+                        </div>
+
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-car me-1 text-primary"></i> <%= client.car || client.carModel %> | 
+                            <i class="fas fa-money-bill-wave me-1 text-success"></i> <%= client.budget || 'غير محدد' %>
+                        </p>
+
+                        <div class="contact-box d-flex justify-content-between align-items-center">
+                            <a href="tel:<%= client.phone %>" class="phone-link">
+                                <i class="fas fa-mobile-alt me-1 text-muted"></i> <%= client.phone %>
+                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="https://wa.me/<%= client.phone %>" target="_blank" class="btn btn-sm btn-success rounded-circle" title="واتساب">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                                <a href="tel:<%= client.phone %>" class="btn btn-sm btn-primary rounded-circle" title="اتصال">
+                                    <i class="fas fa-phone-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <p class="mb-3 mt-2">
+                            <span class="small fw-bold text-muted">المسؤول:</span> 
+                            <span class="badge badge-assigned"><i class="fas fa-user-tie me-1"></i> <%= client.AssignedTo || 'لم يتم التوزيع' %></span>
+                        </p>
+                        
+                        <div class="border-top pt-3 text-center">
+                            <% if (user.role === 'admin') { %>
+                                <button class="btn btn-sm btn-warning w-100 fw-bold py-2 shadow-sm" onclick="openAssignModal('<%= client.id %>', '<%= client.name %>')">
+                                    <i class="fas fa-user-plus me-1"></i> إعادة توزيع العميل
+                                </button>
+                            <% } else if (user.role === 'sales' && client.AssignedTo === user.name) { %>
+                                <button class="btn btn-sm btn-action w-100 py-2 shadow-sm" onclick="openActionModal('<%= JSON.stringify(client) %>')">
+                                    <i class="fas fa-phone-volume me-1"></i> بدء التعامل / تحديث الحالة
+                                </button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+</div>
+
+<div class="modal fade" id="assignModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <form action="/assign-client" method="POST">
+                <input type="hidden" name="clientId" id="assignClientId">
+                <div class="modal-header bg-warning text-dark border-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-user-check me-2"></i> توزيع العميل على المبيعات</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <h5 id="assignClientName" class="fw-bold mb-4"></h5>
+                    <div class="text-start">
+                        <label class="form-label fw-bold">اختر الموظف:</label>
+                        <select name="employeeName" class="form-select form-select-lg" required>
+                            <option value="" disabled selected>اختر موظف من القائمة...</option>
+                            <% employees.forEach(emp => { %>
+                                <option value="<%= emp.name %>"><%= emp.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold rounded-3">حفظ التعديلات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="actionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <form action="/update-client-status" method="POST">
+                <input type="hidden" name="clientId" id="modalClientId">
+                <div class="modal-header bg-dark text-white border-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-tasks me-2 text-warning"></i> تسجيل نتيجة التواصل</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold text-dark">طريقة التواصل:</label>
+                            <div class="d-flex gap-2">
+                                <input type="radio" class="btn-check" name="contactMethod" id="methodWh" value="واتساب" required>
+                                <label class="btn btn-outline-success w-100 fw-bold" for="methodWh"><i class="fab fa-whatsapp me-1"></i> واتساب</label>
+                                <input type="radio" class="btn-check" name="contactMethod" id="methodPh" value="مكالمة">
+                                <label class="btn btn-outline-primary w-100 fw-bold" for="methodPh"><i class="fas fa-phone-alt me-1"></i> مكالمة</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold text-dark">الحالة الجديدة:</label>
+                            <select name="newStatus" class="form-select fw-bold" required>
+                                <option value="deals">تحويل لصفقة (مهتم)</option>
+                                <option value="followup">متابعة لاحقاً</option>
+                                <option value="rejected">غير مهتم / إغلاق</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-2 text-start">
+                        <label class="form-label fw-bold text-dark">ماذا دار في المحادثة؟</label>
+                        <textarea name="employeeNotes" class="form-control" rows="3" placeholder="اكتب ملاحظاتك هنا لتذكيرك لاحقاً..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-3 shadow">حفظ البيانات ونقل العميل</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // تحديث الساعة لايف
+    setInterval(() => {
+        document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('ar-EG');
+    }, 1000);
+
+    function openAssignModal(id, name) {
+        document.getElementById('assignClientId').value = id;
+        document.getElementById('assignClientName').innerText = "العميل: " + name;
+        new bootstrap.Modal(document.getElementById('assignModal')).show();
+    }
+
+    function openActionModal(clientData) {
+        const client = JSON.parse(clientData);
+        document.getElementById('modalClientId').value = client.id;
+        new bootstrap.Modal(document.getElementById('actionModal')).show();
+    }
+</script>
+</body>
+</html>

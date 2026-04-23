@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة العملاء | السفير لوجستيك</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #e74c3c;
+            --dark-gray: #1e293b;
+            --light-bg: #f1f5f9;
+            --accent-gold: #c5a059;
+        }
+
+        body { 
+            background: var(--light-bg);
+            font-family: 'Cairo', sans-serif; 
+            color: var(--dark-gray);
+            min-height: 100vh;
+        }
+
+        /* نيفبار فخم */
+        .navbar { 
+            background: #0f172a !important; 
+            border-bottom: 3px solid var(--primary-red);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 12px 0;
+        }
+
+        .premium-card {
+            background: white;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.05);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .premium-card:hover { transform: translateY(-5px); }
+
+        .form-label { font-weight: 700; font-size: 0.85rem; color: #475569; margin-bottom: 8px; }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            background: #f8fafc;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+        }
+
+        /* تنسيق الجدول الاحترافي */
+        .table-container {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .table thead { background: var(--dark-gray); color: white; }
+        .table thead th { border: none; padding: 20px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+        .table tbody td { padding: 18px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
+
+        .btn-premium {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white; border: none; border-radius: 15px;
+            padding: 14px 35px; font-weight: 800; transition: 0.4s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-premium:hover { 
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+            color: white;
+        }
+
+        /* Badges & Indicators */
+        .badge-added-by { background-color: #f1f5f9; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; border: 1px solid #e2e8f0; }
+        .badge-assigned-to { background: rgba(197, 160, 89, 0.15); color: #856404; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-left: 6px; }
+        
+        .time-text { font-size: 0.7rem; color: #94a3b8; display: block; margin-top: 4px; }
+        
+        tr.waiting-row { border-right: 4px solid #f39c12; }
+        tr.active-row { border-right: 4px solid #2ecc71; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark p-3 sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-extrabold" href="/">
+            <i class="fas fa-car-side me-2 text-danger"></i> السفير <span class="text-danger">لوجستيك</span>
+        </a>
+        <div class="text-white d-flex align-items-center bg-dark p-2 px-3 rounded-pill border border-secondary">
+            <i class="fas fa-clock me-2 text-danger"></i>
+            <span id="live-clock" class="fw-bold" style="min-width: 80px;">00:00:00</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card premium-card p-4 mb-5 border-0">
+        <div class="d-flex align-items-center mb-4">
+            <div class="bg-danger text-white rounded-4 d-flex align-items-center justify-content-center shadow-lg" style="width: 50px; height: 50px;">
+                <i class="fas fa-plus-circle fs-4"></i>
+            </div>
+            <div class="ms-3">
+                <h4 class="fw-black mb-0">إضافة عميل جديد</h4>
+                <small class="text-muted">قم بتعبئة بيانات العميل بدقة للتوزيع التلقائي</small>
+            </div>
+        </div>
+
+        <form action="/add-client" method="POST" class="row g-4">
+            <div class="col-md-4">
+                <label class="form-label">اسم العميل</label>
+                <input type="text" name="name" class="form-control" placeholder="الاسم ثلاثي..." required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">رقم الموبايل</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 rounded-start-12"><i class="fas fa-phone text-muted"></i></span>
+                    <input type="tel" name="phone" class="form-control border-start-0" placeholder="01xxxxxxxxx" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">نوع السيارة المطلوبة</label>
+                <input type="text" name="car" class="form-control" placeholder="مثلاً: Hyundai Tucson 2024">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">الميزانية المتوقعة (ج.م)</label>
+                <input type="number" name="budget" class="form-control" placeholder="مثلاً: 1200000">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">نظام الدفع</label>
+                <select name="payment" class="form-select">
+                    <option value="كاش">كاش</option>
+                    <option value="تقسيط">تقسيط مباشر</option>
+                    <option value="بنك">تمويل بنكي</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">مصدر الاستفسار</label>
+                <select name="source" class="form-select">
+                    <option value="واتساب">واتساب</option>
+                    <option value="فيسبوك">فيسبوك</option>
+                    <option value="تيك توك">تيك توك</option>
+                    <option value="مكالمة">مكالمة مباشرة</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">ملاحظات سريعة</label>
+                <input type="text" name="notes" class="form-control" placeholder="أي تفاصيل إضافية...">
+            </div>
+            <div class="col-12 text-end mt-4">
+                <button type="submit" class="btn btn-premium px-5">
+                    <i class="fas fa-paper-plane me-2"></i> تسجيل وتوجيه العميل
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container shadow mb-5">
+        <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-list-ul me-2 text-danger"></i> سجل العملاء الأخير</h5>
+            <span class="badge bg-dark px-3 py-2 rounded-pill"><%= clients.length %> عميل مسجل</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="text-center">
+                    <tr>
+                        <th>العميل</th>
+                        <th>الطلب</th>
+                        <th>الميزانية</th>
+                        <th>المُدخل</th>
+                        <th>المسؤول</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <% clients.reverse().forEach(client => { %>
+                        <tr class="<%= client.Status === 'waiting' ? 'waiting-row' : 'active-row' %>" onclick="showDetails('<%= JSON.stringify(client) %>')" style="cursor: pointer;">
+                            <td>
+                                <div class="fw-bold text-dark"><%= client.name %></div>
+                                <span class="time-text"><i class="far fa-clock me-1"></i> <%= client.createdAt || 'اليوم' %></span>
+                            </td>
+                            <td><span class="text-muted"><%= client.car %></span></td>
+                            <td><span class="text-danger fw-bold"><%= client.budget ? Number(client.budget).toLocaleString() : '0' %> ج.م</span></td>
+                            <td>
+                                <span class="badge-added-by">
+                                    <i class="fas fa-user-edit me-1 small"></i> <%= client.AddedBy %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if(client.Status === 'waiting') { %>
+                                    <span class="text-warning small fw-bold anim-pulse">
+                                        <i class="fas fa-circle status-dot"></i> في الانتظار
+                                    </span>
+                                <% } else { %>
+                                    <span class="badge-assigned-to">
+                                        <i class="fas fa-user-check me-1"></i> <%= client.AssignedTo %>
+                                    </span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill <%= client.Status === 'waiting' ? 'bg-warning text-dark' : 'bg-success text-white' %> px-3">
+                                    <%= client.Status === 'waiting' ? 'مُعلق' : 'مُوزع' %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <div class="modal-header bg-dark text-white border-0">
+                <h5 class="modal-title fw-bold">تفاصيل العميل</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 text-center" id="modalBody">
+                </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ساعة لايف بتوقيت مصر
+    setInterval(() => {
+        document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('ar-EG');
+    }, 1000);
+
+    // دالة عرض التفاصيل (اختياري لو عايز تفعلها)
+    function showDetails(data) {
+        const client = JSON.parse(data);
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div class="mb-3"><i class="fas fa-user-circle display-4 text-danger"></i></div>
+            <h4 class="fw-bold">${client.name}</h4>
+            <p class="text-muted">${client.phone}</p>
+            <hr>
+            <div class="row text-start g-3">
+                <div class="col-6"><strong>السيارة:</strong> ${client.car}</div>
+                <div class="col-6"><strong>الميزانية:</strong> ${client.budget} ج.م</div>
+                <div class="col-6"><strong>المصدر:</strong> ${client.source}</div>
+                <div class="col-6"><strong>الدفع:</strong> ${client.payment}</div>
+                <div class="col-12 border-top pt-2"><strong>ملاحظات:</strong> ${client.notes || 'لا يوجد'}</div>
+            </div>
+        `;
+        new bootstrap.Modal(document.getElementById('detailsModal')).show();
+    }
+</script>
+</body>
+</html>

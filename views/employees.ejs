@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة النخبة | السفير</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-color: #e74c3c;
+      --accent-dark: #c0392b;
+      --dark-bg: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --glow-red: rgba(231, 76, 60, 0.3);
+    }
+
+    body {
+      background: #f1f5f9;
+      font-family: 'Cairo', sans-serif;
+      color: #1e293b;
+      min-height: 100vh;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .navbar {
+      background: var(--dark-bg) !important;
+      border-bottom: 3px solid var(--accent-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 15px 0;
+    }
+
+    .nav-link-back {
+      color: white !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 700;
+      padding: 8px 20px !important;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    .nav-link-back:hover {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--accent-color) !important;
+      transform: scale(1.05);
+    }
+
+    .emp-card {
+      background: var(--card-bg);
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+      transition: transform 0.4s ease;
+      overflow: hidden;
+      margin-bottom: 35px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .card-header-custom {
+      background: linear-gradient(45deg, var(--dark-bg), #1e293b);
+      color: white;
+      padding: 25px 35px;
+      border-bottom: 2px solid var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--dark-bg);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .form-control, .form-select {
+      border-radius: 15px;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: #fff;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 5px var(--glow-red);
+    }
+
+    .table-premium thead th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      padding: 20px;
+    }
+
+    .badge-role {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.75rem;
+    }
+
+    .role-admin { background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; }
+    .role-crm { background: linear-gradient(45deg, #2f3542, #57606f); color: white; }
+    .role-sales { background: linear-gradient(45deg, #2ed573, #7bed9f); color: white; }
+
+    .btn-fajer {
+      background: var(--accent-color);
+      color: white;
+      border-radius: 20px;
+      padding: 18px 45px;
+      font-weight: 900;
+      border: none;
+      transition: all 0.4s;
+      box-shadow: 0 10px 20px var(--glow-red);
+    }
+
+    .btn-fajer:hover {
+      background: var(--dark-bg);
+      transform: scale(1.05);
+    }
+
+    .emp-avatar {
+      width: 50px; height: 50px;
+      background: #f1f5f9;
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent-color);
+      font-size: 1.4rem;
+      border: 2px solid #e2e8f0;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="hidden" id="server-start-time" value="<%= typeof serverTime !== 'undefined' ? serverTime : new Date().toISOString() %>">
+
+  <nav class="navbar navbar-dark sticky-top p-3">
+    <div class="container">
+      <a class="navbar-brand nav-link-back" href="/">
+        <i class="fas fa-arrow-right me-2"></i> العودة للرئيسية
+      </a>
+      <div id="live-clock" class="text-white fw-bold">00:00:00</div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <% if(typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger border-0 shadow rounded-4">
+      <i class="fas fa-exclamation-triangle me-2"></i> <%= error %>
+    </div>
+    <% } %>
+
+    <div class="card emp-card">
+      <div class="card-header-custom">
+        <h5 class="mb-0 fw-bold"><i class="fas fa-user-shield me-2 text-danger"></i> إضافة كادر جديد للنظام</h5>
+        <span class="small opacity-75">حدد صلاحيات الوصول بعناية</span>
+      </div>
+      <div class="card-body p-4 p-lg-5">
+        <form action="/add-employee" method="POST" class="row g-4">
+          <div class="col-md-4">
+            <label class="form-label">الاسم الثلاثي</label>
+            <input type="text" name="name" class="form-control" placeholder="اسم الموظف بالكامل" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">اسم المستخدم (Username)</label>
+            <input type="text" name="username" class="form-control" placeholder="m.ahmed" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">كلمة المرور</label>
+            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label text-danger">صلاحية النظام (الرتبة)</label>
+            <select name="role" class="form-select border-danger" required>
+              <option value="" disabled selected>اختر الصلاحية...</option>
+              <option value="sales">موظف مبيعات</option>
+              <option value="crm">مسؤول CRM</option>
+              <option value="admin">عضو مجلس إدارة</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">الرقم القومي</label>
+            <input type="text" name="nationalId" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">موبايل العمل</label>
+            <input type="tel" name="workPhone" class="form-control">
+          </div>
+          <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-fajer shadow-lg">تفعيل الصلاحيات</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card emp-card pb-0">
+      <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-white">
+        <h5 class="fw-extrabold mb-0 text-dark">الهيكل الإداري الحالي</h5>
+        <span class="badge bg-danger rounded-pill"><%= employees.length %> كادر</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-premium table-hover mb-0">
+          <thead>
+            <tr>
+              <th>الموظف / الرتبة</th>
+              <th>اسم المستخدم</th>
+              <th>التواصل</th>
+              <th class="text-center">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% employees.forEach(emp => { %>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="emp-avatar me-3">
+                    <i class="fas <%= emp.role === 'admin' ? 'fa-crown' : (emp.role === 'crm' ? 'fa-user-cog' : 'fa-user-tie') %>"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark"><%= emp.name %></div>
+                    <span class="badge-role <%= emp.role === 'admin' ? 'role-admin' : (emp.role === 'crm' ? 'role-crm' : 'role-sales') %>">
+                      <%= emp.role === 'admin' ? 'مجلس إدارة' : (emp.role === 'crm' ? 'CRM' : 'مبيعات') %>
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td><code class="text-danger fw-bold"><%= emp.username %></code></td>
+              <td><i class="fas fa-phone-alt me-2 text-muted"></i><%= emp.workPhone %></td>
+              <td class="text-center">
+                <div class="btn-group shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                  <button class="btn btn-dark btn-sm px-3" title="عرض" onclick='viewEmpDetails(`<%= JSON.stringify(emp) %>`)'>
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-primary btn-sm px-3" title="تعديل" onclick='editEmpDetails(`<%= JSON.stringify(emp) %>`)'>
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm px-3" title="حذف" onclick="deleteEmployee('<%= emp.id %>', '<%= emp.name %>')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/employees.js"></script> 
+</body>
+
+</html>

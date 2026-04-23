@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>السفير لوجستيك | نظام الإدارة الذكي</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-dark: #0f172a;
+      --accent-gold: #c5a059;
+      --accent-soft: #e2c286;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --card-gradient: linear-gradient(145deg, #ffffff, #f8fafc);
+      --text-main: #1e293b;
+      --glow-gold: rgba(197, 160, 89, 0.5);
+    }
+
+    body {
+      background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.97)),
+        url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Cairo', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .top-info-bar {
+      background: rgba(197, 160, 89, 0.1);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+      padding: 10px 0;
+      font-size: 0.85rem;
+    }
+
+    .navbar {
+      background: rgba(15, 23, 42, 0.8) !important;
+      backdrop-filter: blur(20px);
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .navbar-brand span {
+      color: var(--accent-gold);
+      text-shadow: 0 0 15px var(--glow-gold);
+    }
+
+    .hero-text { padding: 50px 0 30px; }
+
+    /* تصميم قسم التذكيرات المطور - خصوصية الأرقام */
+    .reminder-alert-box {
+      background: rgba(197, 160, 89, 0.1);
+      border: 1px dashed var(--accent-gold);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(8px);
+    }
+
+    .reminder-item {
+      background: #fff;
+      color: var(--primary-dark);
+      padding: 8px 18px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border-right: 5px solid var(--accent-gold);
+      transition: 0.3s;
+    }
+    
+    .reminder-item:hover { transform: translateY(-3px); }
+    .reminder-item i { color: var(--accent-gold); font-size: 1.1rem; }
+
+    /* كروت المنيو */
+    .menu-card {
+      background: var(--card-gradient);
+      border-radius: 25px;
+      padding: 40px 25px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 100%;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .menu-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      background: #fff;
+    }
+
+    .icon-wrapper {
+      width: 80px; height: 80px;
+      background: var(--primary-dark);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2.2rem; color: var(--accent-gold);
+      transition: 0.5s;
+    }
+
+    .menu-card:hover .icon-wrapper {
+      background: var(--accent-gold);
+      color: #fff;
+      transform: rotateY(180deg);
+    }
+
+    .card-title { color: var(--primary-dark); font-weight: 800; }
+    .card-desc { color: #64748b; font-size: 0.9rem; min-height: 50px; }
+
+    /* فوتر المطور */
+    footer {
+      background: rgba(15, 23, 42, 0.98);
+      padding: 50px 0 30px;
+      border-top: 2px solid var(--accent-gold);
+      margin-top: 60px;
+    }
+
+    .dev-link {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      transition: 0.3s;
+      padding: 5px 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+    }
+
+    .dev-link:hover {
+      background: rgba(197, 160, 89, 0.1);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+    }
+
+    .status-dot {
+      height: 10px; width: 10px; background: #22c55e;
+      border-radius: 50%; display: inline-block; margin-left: 8px;
+      box-shadow: 0 0 10px #22c55e;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top-info-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="small"><i class="fa-solid fa-calendar-day me-2 text-warning"></i><span id="live-date"></span></div>
+      <div class="d-none d-md-block fw-bold">
+        <span class="status-dot animate__animated animate__flash animate__infinite"></span>
+        أهلاً يا هندسة: <span class="text-warning"><%= user.name %></span>
+      </div>
+      <div class="fw-bold"><i class="fa-regular fa-clock me-2 text-warning"></i><span id="live-clock"></span></div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-black fs-3" href="#"><i class="fas fa-crown me-2"></i><span>السفير</span> لوجستيك</a>
+      <div class="d-flex gap-3">
+        <span class="badge bg-warning text-dark align-self-center px-3 rounded-pill fw-bold">ID: <%= user.role %></span>
+        <a href="/logout" class="btn btn-danger btn-sm px-4 rounded-pill fw-bold shadow-sm">خروج</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="hero-text text-center animate__animated animate__fadeIn">
+      <h1 class="display-5 fw-black mb-3">لوحة التحكم الذكية</h1>
+      <p class="text-white-50 mb-4">إدارة العمليات والمتابعات اليومية لشركة السفير</p>
+      
+      <% 
+        const myReminders = clients.filter(c => {
+          const hasReminder = c.reminderDate && c.reminderDate !== '';
+          if (user.role === 'admin') return hasReminder;
+          return hasReminder && c.AssignedTo === user.name;
+        });
+
+        if (myReminders.length > 0) { 
+      %>
+        <div class="reminder-alert-box shadow-lg">
+          <h6 class="text-warning mb-3 fw-bold"><i class="fas fa-bullhorn me-2"></i> تذكيرات المتابعة (برقم الهاتف):</h6>
+          <div class="d-flex flex-wrap justify-content-center">
+            <% myReminders.forEach(rem => { %>
+              <div class="reminder-item animate__animated animate__fadeInUp">
+                <i class="fas fa-phone-alt"></i>
+                <span><%= rem.phone %></span>
+                <span class="badge bg-dark text-warning ms-2"><%= rem.reminderDate.replace('T', ' | ') %></span>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <% if (user.role === 'admin') { %>
+      <div class="col-lg-4 col-md-6">
+        <a href="/dashboard" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+            <h5 class="card-title">الداشبورد الإداري</h5>
+            <p class="card-desc">تحليل مبيعات الشركة، أداء الفريق، والتقارير الشهرية.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">عرض الإحصائيات</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <a href="/employees" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-users-gear"></i></div>
+            <h5 class="card-title">إدارة فريق العمل</h5>
+            <p class="card-desc">التحكم في حسابات المناديب، الصلاحيات، ومتابعة النشاط.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">إدارة الفريق</div>
+          </div>
+        </a>
+      </div>
+      <% } %>
+
+      <div class="col-lg-4 col-md-6">
+        <a href="/clients" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-id-card"></i></div>
+            <h5 class="card-title">قاعدة العملاء</h5>
+            <p class="card-desc">إضافة عملاء جدد، تتبع البيانات والبحث في السجل التاريخي.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">فتح السجل</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <a href="/deals" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-file-contract"></i></div>
+            <h5 class="card-title">إدارة الصفقات</h5>
+            <p class="card-desc">متابعة مراحل التعاقد، تحصيل المبالغ، وحالات الصفقات.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">لوحة الصفقات</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <a href="/waiting-list" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <h5 class="card-title">قائمة الانتظار</h5>
+            <p class="card-desc">توزيع الطلبات الواردة والتحكم في دور العملاء بالانتظار.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">مراجعة الانتظار</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <a href="/visits" class="text-decoration-none">
+          <div class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+            <h5 class="card-title">المعاينات</h5>
+            <p class="card-desc">جدولة زيارات فحص السيارات وإصدار تقارير الحالة الفنية.</p>
+            <div class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">سجل المعاينات</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="mb-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/741/741407.png" width="40" class="opacity-50 mb-3" alt="logo">
+        <h5 class="fw-black text-warning mb-1">السفير لوجستيك للسيارات</h5>
+        <p class="small text-white-50">النظام الذكي المتكامل لإدارة خدمات اللوجستيات والتعاقدات</p>
+      </div>
+      <hr class="bg-secondary opacity-25 my-4">
+      <p class="mb-2 small text-white-50">© 2026 جميع الحقوق محفوظة</p>
+      <p class="small fw-bold">
+        Developed with <i class="fas fa-heart text-danger"></i> by 
+        <a href="https://procoding.vercel.app/" target="_blank" class="dev-link">
+           Belal Hesham (ProCoding)
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('live-clock').innerText = now.toLocaleTimeString('ar-EG');
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('live-date').innerText = now.toLocaleDateString('ar-EG', options);
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>

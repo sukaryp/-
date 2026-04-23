@@ -1,0 +1,178 @@
+[
+  {
+    "id": 1776836540921,
+    "name": "بلال هشام محمد",
+    "phone": "01144365046",
+    "car": ";dh",
+    "model": "",
+    "type": "hugd",
+    "budget": "d342",
+    "payment": "كاش",
+    "source": "واتساب",
+    "notes": "",
+    "Status": "distributed",
+    "AssignedTo": "بلال هشام محمد",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢١‏/٤‏/٢٠٢٦، ١٠:٤٢:٢٠ م"
+  },
+  {
+    "id": 1776837678292,
+    "name": "سكر كياس ",
+    "phone": "01144365046",
+    "car": "كيات",
+    "budget": "3232",
+    "payment": "كاش",
+    "source": "فيسبوك",
+    "notes": "يبي",
+    "Status": "waiting_reply",
+    "AssignedTo": "بلال هشام محمد",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢١‏/٤‏/٢٠٢٦، ١١:٠١:١٨ م",
+    "ContactMethod": "واتساب",
+    "Notes": "",
+    "UpdatedAt": "٢١‏/٤‏/٢٠٢٦، ١١:٤٢:٥٢ م",
+    "NotesHistory": []
+  },
+  {
+    "id": 1776838835263,
+    "name": "ندي ",
+    "phone": "01144365046",
+    "car": "سبورتاج",
+    "budget": "500000",
+    "payment": "كاش",
+    "source": "إنستجرام",
+    "notes": "",
+    "Status": "rejected",
+    "AssignedTo": "بلال هشام محمد",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢١‏/٤‏/٢٠٢٦، ١١:٢٠:٣٥ م",
+    "ContactMethod": "فون",
+    "Notes": "",
+    "UpdatedAt": "٢٢‏/٤‏/٢٠٢٦، ٥:١٥:٢٨ م",
+    "NotesHistory": [
+      {
+        "text": "لا",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ٤:٥١:٥٧ م",
+        "status": "waiting_reply"
+      }
+    ],
+    "reminderDate": "2026-04-22T17:15"
+  },
+  {
+    "id": 1776839237991,
+    "name": "ندي ",
+    "phone": "01144365046",
+    "car": "سبورتاج",
+    "budget": "500000",
+    "payment": "كاش",
+    "source": "واتساب",
+    "notes": "",
+    "Status": "waiting_reply",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢١‏/٤‏/٢٠٢٦، ١١:٢٧:١٧ م",
+    "Notes": "",
+    "UpdatedAt": "٢٢‏/٤‏/٢٠٢٦، ١:٣٦:١٧ ص",
+    "NotesHistory": [
+      {
+        "text": "لا",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ١:٣٦:٠٤ ص",
+        "status": "deals"
+      },
+      {
+        "text": "كلمته ومش بيرد ",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ١:٣٦:١٢ ص",
+        "status": "deals"
+      }
+    ]
+  },
+  {
+    "id": 1776844321308,
+    "name": "محجوب ",
+    "phone": "01018442042",
+    "car": "سبورتاج ",
+    "budget": "5000000",
+    "payment": "كاش",
+    "source": "فيسبوك",
+    "notes": "",
+    "Status": "waiting_reply",
+    "AssignedTo": "عبدو",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢٢‏/٤‏/٢٠٢٦، ١٢:٥٢:٠١ ص",
+    "ContactMethod": "واتساب",
+    "NotesHistory": [
+      {
+        "text": "فاشل",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ١:٥٤:٢٢ ص",
+        "status": "followup"
+      },
+      {
+        "text": "مشغول انهارده ",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ٦:٣١:٤٥ م",
+        "status": "waiting_reply"
+      }
+    ],
+    "UpdatedAt": "٢٢‏/٤‏/٢٠٢٦، ٦:٣١:٤٥ م",
+    "reminderDate": "2026-04-22T18:31"
+  },
+  {
+    "id": 1776844401279,
+    "name": "سكر كياس ",
+    "phone": "01018442042",
+    "car": "سبورتاج ",
+    "budget": "5000000",
+    "payment": "كاش",
+    "source": "واتساب",
+    "notes": "",
+    "Status": "deals",
+    "AssignedTo": "عبدو",
+    "AddedBy": "بلال هشام",
+    "createdAt": "٢٢‏/٤‏/٢٠٢٦، ١٢:٥٣:٢١ ص",
+    "ContactMethod": "فون",
+    "NotesHistory": [
+      {
+        "text": "thag",
+        "date": "٢٢‏/٤‏/٢٠٢٦، ١:٤٨:٤٣ ص",
+        "status": "deals"
+      }
+    ],
+    "UpdatedAt": "٢٢‏/٤‏/٢٠٢٦، ١:٤٨:٤٣ ص"
+  },
+  {
+    "id": 1776898488001,
+    "name": "ميدو",
+    "phone": "0114436590",
+    "car": "سبورتاج",
+    "budget": "4555544",
+    "payment": "قسط",
+    "source": "فيسبوك",
+    "notes": "ق",
+    "Status": "waiting",
+    "AssignedTo": null,
+    "AddedBy": "بلال هشام محمد",
+    "createdAt": "٢٢‏/٤‏/٢٠٢٦، ٣:٥٤:٤٨ م"
+  },
+  {
+    "id": 1776907807057,
+    "name": "محمد ابراهيم",
+    "phone": "01135565509",
+    "AssignedTo": "وجيه محمد ",
+    "car": "غير محدد",
+    "budget": "100000000",
+    "Status": "waiting",
+    "NotesHistory": [],
+    "reminderDate": null,
+    "CreatedAt": "٢٢‏/٤‏/٢٠٢٦، ٦:٣٠:٠٧ م"
+  },
+  {
+    "id": 1776907936147,
+    "name": "بلال هشام محمد",
+    "phone": "01135565509",
+    "AssignedTo": "غير موزع",
+    "car": "غير محدد",
+    "budget": "100000000",
+    "Status": "waiting",
+    "NotesHistory": [],
+    "reminderDate": null,
+    "CreatedAt": "٢٢‏/٤‏/٢٠٢٦، ٦:٣٢:١٦ م"
+  }
+]

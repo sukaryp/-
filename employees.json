@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1776836512648,
+    "name": "بلال هشام محمد",
+    "username": "ADHAM",
+    "password": "ADHAM.COM",
+    "role": "admin",
+    "nationalId": "90293902902",
+    "personalPhone": "01144365046",
+    "workPhone": "01011190641",
+    "startTime": "16:41",
+    "endTime": "22:47",
+    "workDays": "",
+    "CurrentClients": 4
+  },
+  {
+    "id": 1776843348740,
+    "name": "عبدو",
+    "username": "abdo",
+    "password": "abdo123",
+    "role": "sales",
+    "nationalId": "90293902902",
+    "personalPhone": "01144365046",
+    "workPhone": "01011190641",
+    "startTime": "",
+    "endTime": "",
+    "workDays": "3",
+    "CurrentClients": 0
+  },
+  {
+    "id": 1776898464704,
+    "name": "محمد مهدي",
+    "username": "mohamad",
+    "password": "123456789",
+    "role": "sales",
+    "workPhone": "011464377768",
+    "startTime": "03:54",
+    "endTime": "15:54",
+    "workDays": "السبت-- الخميس",
+    "nationalId": "9754687547",
+    "currentClients": 0
+  }
+]
